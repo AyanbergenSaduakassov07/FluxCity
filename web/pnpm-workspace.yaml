@@ -1,3 +1,0 @@
-allowBuilds:
-  esbuild: true
-  "@vaadin/vaadin-usage-statistics": false

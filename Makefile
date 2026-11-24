@@ -1,0 +1,86 @@
+# FluxCity: one-command entry points. Everything is synthetic demand, uncalibrated.
+#
+#   make demo        setup + city network (unless CITY=0) + demo runs + API and viewer on :5173
+#   make city        city network + 10 % weekday 24 h baseline (long: about 2 h uncached)
+#   make test        ruff + pytest (demo window only, about 3 min)
+#   make stop        stop servers started with `./run_app.sh --detach`
+#
+# Variables: CITY=0 skips the 243 MB OSM download and the Tier A smoke; SEED=1; SAMPLE=0.10;
+# DETACH=1 leaves the servers running in the background (used by the screenshot proof).
+
+SHELL := /bin/bash
+SEED ?= 1
+SAMPLE ?= 0.10
+CITY ?= 1
+DETACH ?= 0
+UV := uv
+# Tier A network v2 (Track F, docs/network-v2.md); v1 (M1) and m2 (Track A) still build on request.
+CITY_NET := data/jeddah/jeddah.v2.net.xml
+V1_NET := data/jeddah/jeddah.net.xml
+M2_NET := data/jeddah/jeddah.m2.net.xml
+
+.PHONY: demo setup city-net city-net-v1 demo-runs ingest serve city city-baseline test screenshots stop clean-demo
+
+demo: setup $(if $(filter 1,$(CITY)),city-net) demo-runs ingest serve
+
+setup:
+	@command -v uv >/dev/null || { echo "uv is required: https://docs.astral.sh/uv/ (brew install uv)"; exit 1; }
+	@command -v npm >/dev/null || { echo "node/npm is required (brew install node)"; exit 1; }
+	$(UV) python install 3.12
+	$(UV) sync --frozen
+	@$(MAKE) --no-print-directory web/node_modules/.package-lock.json
+
+# npm ci only when the lockfile changed (it wipes node_modules, even under a running Vite server)
+web/node_modules/.package-lock.json: web/package-lock.json
+	cd web && npm ci --include=dev --no-audit --no-fund
+
+# Jeddah network (v2, default profile): downloads the Geofabrik GCC extract on first run, clips,
+# tags untagged major roads with the measured lane/speed defaults, netconvert, fixes.
+city-net: $(CITY_NET)
+$(CITY_NET):
+	@command -v osmium >/dev/null || {
+	  if command -v brew >/dev/null; then brew install osmium-tool;
+	  else echo "osmium-tool is required (apt install osmium-tool)"; exit 1; fi; }
+	$(UV) run python -m sim.network.build_city
+
+demo-runs:
+	$(UV) run python -m sim.demo --seed $(SEED)
+
+ingest:
+	$(UV) run python -m api.ingest --all
+
+serve:
+	./run_app.sh $(if $(filter 1,$(DETACH)),--detach)
+
+# Earlier networks, kept reproducible: v1 (M1, Tier B windows are cut from it) and m2 (Track A).
+city-net-v1: $(V1_NET)
+$(V1_NET):
+	$(UV) run python -m sim.network.build_city --network-profile v1
+$(M2_NET):
+	$(UV) run python -m sim.network.build_city --network-profile m2 --out $(M2_NET) --no-side-outputs
+
+# Long-running (documented in README): zones on the v2 network and the weekday baseline.
+ZONES := data/population/zones/zones.json
+city: city-net $(ZONES) city-baseline
+$(ZONES): $(CITY_NET)
+	$(UV) run python -m sim.population.zones
+city-baseline: $(CITY_NET) $(ZONES)
+	mkdir -p logs
+	set -o pipefail; $(UV) run python -m sim.runner --baseline --daytype weekday --sample $(SAMPLE) --seed $(SEED)
+	  --gzip 2>&1 | tee logs/city-baseline.log
+
+test:
+	$(UV) run ruff check . && $(UV) run ruff format --check . && $(UV) run pytest -q
+	cd web && npm run typecheck
+
+# Headless Chrome screenshots of the running viewer (docs/img/final-*.png); needs `make demo DETACH=1`.
+screenshots:
+	cd web && node scripts/final-shots.mjs
+
+stop:
+	@if [[ -f logs/app.pids ]]; then kill $$(cat logs/app.pids) 2>/dev/null || true; rm -f logs/app.pids; echo stopped;
+	else echo "no logs/app.pids (nothing started with --detach)"; fi
+
+clean-demo:
+	rm -rf runs/demo-manifest.json data/demo-cache
+

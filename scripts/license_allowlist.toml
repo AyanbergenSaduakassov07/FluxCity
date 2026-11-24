@@ -1,7 +1,7 @@
 # ADR-014 license gate. SPDX ids allowed for runtime + dev dependencies.
 allowed = [
   "MIT", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "ISC", "PSF-2.0", "Python-2.0",
-  "MPL-2.0", "EPL-2.0", "Unlicense", "0BSD", "Zlib",
+  "MPL-2.0", "EPL-2.0", "Unlicense", "0BSD", "Zlib", "CC0-1.0", "MIT-CMU",
 ]
 
 # Trove classifier / free-text License field -> SPDX id.
