@@ -10,7 +10,7 @@ from typing import Annotated, Any
 
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field, computed_field, model_validator
 
-from fluxcity.core.hashing import SHA256_RE, content_hash
+from fluxcity.core.hashing import SHA256_RE
 from fluxcity.core.ids import is_id, new_id
 from fluxcity.core.provenance import CalibrationStatus, Provenance
 
@@ -190,6 +190,7 @@ class SimConfig(BaseModel):
     drain_s: float = Field(default=1800, ge=0)
     step_length_s: float = Field(default=1.0, gt=0, le=5)
     time_to_teleport_s: float = Field(default=300, ge=-1)  # -1 disables; recorded, never silent
+    extra_args: tuple[str, ...] = ()  # checked against the sumocfg builder's allow-list (P1.3)
 
     @model_validator(mode="after")
     def _window(self) -> "SimConfig":
@@ -225,14 +226,8 @@ class ScenarioVersion(Entity):
     controllers: tuple[ControllerSpec, ...] = ()
     sim_config: SimConfig = Field(default_factory=SimConfig)
     patch_ids: tuple[Id, ...] = ()
-
-    @computed_field  # type: ignore[prop-decorator]
-    @property
-    def content_hash(self) -> str:
-        """Same inputs => same hash, whichever scenario or parent they sit under."""
-        return content_hash(
-            self, exclude={"id", "created_at", "scenario_id", "parent_id", "content_hash"}
-        )
+    # The experiment content hash needs the referenced artifacts' sha256s, so the store
+    # computes it on insert (store.repos.experiment_hash), not the model.
 
 
 # --- runs ----------------------------------------------------------------------

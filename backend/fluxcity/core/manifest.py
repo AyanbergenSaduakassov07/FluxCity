@@ -14,12 +14,12 @@ log = logging.getLogger(__name__)
 def git_state() -> tuple[str | None, bool | None]:
     try:
         sha = subprocess.run(
-            ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
+            ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True, timeout=5
         ).stdout.strip()
         dirty = subprocess.run(
-            ["git", "status", "--porcelain"], capture_output=True, text=True, check=True
+            ["git", "status", "--porcelain"], capture_output=True, text=True, check=True, timeout=5
         ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError) as e:
+    except (OSError, subprocess.SubprocessError) as e:
         log.warning("git state unavailable: %s", e)
         return None, None
     return sha, bool(dirty)

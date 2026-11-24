@@ -38,12 +38,34 @@ def test_canonical_json_ignores_key_order() -> None:
     )
 
 
-def test_content_hash_ignores_identity_but_tracks_inputs() -> None:
-    v1 = _version(network_version_id=(net := new_id()), demand_version_id=(dem := new_id()))
-    v2 = _version(network_version_id=net, demand_version_id=dem)  # other id/scenario/time
-    assert v1.content_hash == v2.content_hash
-    v3 = v1.model_copy(update={"sim_config": m.SimConfig(end_s=7200)})
-    assert v3.content_hash != v1.content_hash
+def _stored_version(
+    conn: sqlite3.Connection, net_sha: str = SHA, **kw: object
+) -> m.ScenarioVersion:
+    """Fresh network/demand rows (new ids) with the given content, plus a version on top."""
+    net = Repo(conn, m.RoadNetworkVersion).create(
+        m.RoadNetworkVersion(source_id=new_id(), net_sha256=net_sha, sumo_version="1.28.0")
+    )
+    dem = Repo(conn, m.DemandVersion).create(
+        m.DemandVersion(
+            network_version_id=net.id,
+            method=m.DemandMethod.RANDOM,
+            seed=1,
+            routes_sha256="b" * 64,
+            period_s=3600,
+        )
+    )
+    v = _version(network_version_id=net.id, demand_version_id=dem.id, **kw)
+    return Repo(conn, m.ScenarioVersion).create(v)
+
+
+def test_experiment_hash_tracks_content_not_row_ids(conn: sqlite3.Connection) -> None:
+    repo = Repo(conn, m.ScenarioVersion)
+    v1, v2 = _stored_version(conn), _stored_version(conn)  # same content, different row ids
+    assert v1.network_version_id != v2.network_version_id
+    assert repo.content_hash(v1.id) == repo.content_hash(v2.id)
+    v3 = _stored_version(conn, sim_config=m.SimConfig(end_s=7200))
+    v4 = _stored_version(conn, net_sha="c" * 64)
+    assert len({repo.content_hash(v.id) for v in (v1, v3, v4)}) == 3
 
 
 def test_models_are_frozen_and_strict() -> None:
@@ -81,18 +103,20 @@ def test_repo_round_trip_and_pagination(conn: sqlite3.Connection) -> None:
 
 
 def test_versions_are_immutable_in_repo(conn: sqlite3.Connection) -> None:
+    v = _stored_version(conn)
     repo = Repo(conn, m.ScenarioVersion)
-    v = repo.create(_version())
-    assert repo.get(v.id).content_hash == v.content_hash
+    assert repo.get(v.id) == v
     with pytest.raises(InvalidInput):
         repo.replace(v)
 
 
-def test_run_status_can_advance(conn: sqlite3.Connection) -> None:
+def test_run_status_can_advance_but_history_cannot_change(conn: sqlite3.Connection) -> None:
     repo = Repo(conn, m.Run)
     run = repo.create(m.Run(scenario_version_id=new_id(), seed=1))
     repo.replace(run.model_copy(update={"status": m.RunStatus.COMPLETED}))
     assert repo.get(run.id).status is m.RunStatus.COMPLETED
+    with pytest.raises(InvalidInput):
+        repo.replace(run.model_copy(update={"seed": 9}))
 
 
 def test_artifact_store_dedupes_and_round_trips(tmp_path: Path) -> None:
