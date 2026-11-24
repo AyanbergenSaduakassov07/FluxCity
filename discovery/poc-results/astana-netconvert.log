@@ -1,0 +1,99 @@
+Warning: Value of key 'maxspeed:type' is not numeric ('urban') in edge '222723081'.
+Warning: Value of key 'maxspeed:type' is not numeric ('urban') in edge '261475633'.
+Warning: Value of key 'maxspeed:type' is not numeric ('urban') in edge '513046089'.
+Warning: Value of key 'maxspeed:type' is not numeric ('urban') in edge '1146926017'.
+Warning: Value of key 'maxspeed:type' is not numeric ('urban') in edge '1526424961'.
+Warning: Discarding unknown compound 'bus' in type 'bus|highway.service' (first occurrence for edge '269114355').
+Warning: Discarding unknown compound 'cycleway.lane' in type 'cycleway.lane|highway.service' (first occurrence for edge '366418335').
+Warning: Discarding unknown compound 'cycleway.lane' in type 'cycleway.lane|highway.residential' (first occurrence for edge '1462229133').
+Warning: No way found for reference '165600642' in relation '6627219'
+Warning: Ignoring restriction relation '6627219' with unknown from-way.
+Warning: No way found for reference '171875547' in relation '6627220'
+Warning: Ignoring restriction relation '6627220' with unknown to-way.
+Warning: from-edge '258436843' of restriction relation could not be determined
+Warning: Ignoring restriction relation '7234932'.
+Warning: from-edge '258436837' of restriction relation could not be determined
+Warning: Ignoring restriction relation '7234934'.
+Warning: No way found for reference '535918815' in relation '7684969'
+Warning: Ignoring restriction relation '7684969' with unknown from-way.
+Warning: from-edge '507845074' of restriction relation could not be determined
+Warning: Ignoring restriction relation '7840059'.
+Warning: from-edge '507845075' of restriction relation could not be determined
+Warning: Ignoring restriction relation '7840060'.
+Warning: from-edge '507845075' of restriction relation could not be determined
+Warning: Ignoring restriction relation '7840061'.
+Warning: to-edge '610163051' of restriction relation could not be determined
+Warning: to-edge '366420460' of restriction relation could not be determined
+Warning: to-edge '1460483969' of restriction relation could not be determined
+Warning: to-edge '1502919438' of restriction relation could not be determined
+Warning: to-edge '1353710549' of restriction relation could not be determined
+Warning: No way found for reference '1460435124' in relation '19989023'
+Warning: Ignoring restriction relation '19989023' with unknown from-way.
+Warning: No way found for reference '1460435112' in relation '19989025'
+Warning: Ignoring restriction relation '19989025' with unknown to-way.
+Warning: Ignoring restriction relation '20002326' with unknown to-way.
+Warning: Ignoring restriction relation '20013791' with unknown from-way.
+Warning: Ignoring restriction relation '20013793' with unknown to-way.
+Warning: Ignoring restriction relation '20013814' with unknown to-way.
+Warning: Ignoring restriction relation '20013831' with unknown from-way.
+Warning: Removed a road without junctions: -245918432#7,-245918432#6,-245918432#5,-245918432#4,-245918432#3,-245918432#2,-245918432#1,-245918432#0.
+Warning: Removed a road without junctions: 1353710551#0,1353710551#1,-1488526014.
+Warning: Removed a road without junctions: 245918432#0,245918432#1,245918432#2,245918432#3,245918432#4,245918432#5,245918432#6,245918432#7.
+Warning: Not joining junctions 10672585600,2445340521,5011282869 (only 1 edge within and no cross-traffic).
+Warning: Not joining junctions 11017236384,9028881521 (only 1 edge within and no cross-traffic).
+Warning: Not joining junctions 11017236386,11017236387 (only 1 edge within and no cross-traffic).
+Warning: Not joining junctions 5034981217,5034981218 (parallel incoming -1191188823,1461445427#1).
+Warning: Not joining junctions 13367068855,13367068859,1772917332 (only 1 edge within and no cross-traffic).
+Warning: Found sharp turn with radius 8.68 at the start of edge '1549054969#0'.
+Warning: Shape for junction '12786439441' has distance 24.76 to its given position.
+Warning: Shape for junction '12786439442' has distance 59.07 to its given position.
+Warning: Shape for junction '12786439467' has distance 32.16 to its given position.
+Warning: Shape for junction '12786439468' has distance 38.23 to its given position.
+Warning: Shape for junction '13394597387' has distance 20.48 to its given position.
+Warning: Edge '-1510550569#1' is not connected to outgoing edges at junction '5778808870'.
+Warning: Lane '1510550569#0_0' is not connected from any incoming edge at junction '5778808870'.
+Warning: Lane '1510550569#0_1' is not connected from any incoming edge at junction '5778808870'.
+Warning: Lane '610163030#0_0' is not connected from any incoming edge at junction '5778808870'.
+Warning: Edge '610163031#0' is not connected to outgoing edges at junction '5778808870'.
+Warning: Minor green from edge '227893834#0' to edge '1460435162' exceeds 19.44m/s. Maybe a left-turn lane is missing.
+Warning: Minor green from edge '-1460435163#1' to edge '-1526317907#1' exceeds 19.44m/s. Maybe a left-turn lane is missing.
+Warning: Minor green from edge '688297557#0' to edge '-1504536847#3' exceeds 19.44m/s. Maybe a left-turn lane is missing.
+Warning: The traffic light '6536624214' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '6536624214'
+Warning: Minor green from edge '1452593727#0' to edge '1452593729#1' exceeds 19.44m/s. Maybe a left-turn lane is missing.
+Warning: Minor green from edge '-1525700797' to edge '-1452593729#0' exceeds 19.44m/s. Maybe a left-turn lane is missing.
+Warning: Speed of straight connection '1394173233_0->262321169#0_0' reduced by 8.70 due to turning radius of 15.93 (length=18.69, angle=85.80).
+Warning: Speed of straight connection '1186144307_0->166194470#5_4' reduced by 19.01 due to turning radius of 6.53 (length=5.82, angle=73.16).
+Warning: Speed of straight connection '477115046_0->966335515#8_3' reduced by 13.08 due to turning radius of 15.21 (length=11.37, angle=60.21).
+Warning: Speed of straight connection '477115046_0->966335515#8_4' reduced by 13.82 due to turning radius of 12.85 (length=9.51, angle=60.21).
+Warning: Speed of straight connection '477115046_0->966335515#8_5' reduced by 14.42 due to turning radius of 11.07 (length=8.11, angle=60.21).
+Warning: Intersecting left turns at junction 'cluster_1772924240_265187993_5016102445_5016102446' from lane '698225896#2_0' and lane '688297712#4_0' (increase junction radius to avoid this).
+Warning: Intersecting left turns at junction 'cluster_1772924240_265187993_5016102445_5016102446' from lane '730188747#8_0' and lane '258637589#1_0' (increase junction radius to avoid this).
+Warning: 8 total messages of type: Ignoring restriction relation '%' with unknown from-way.
+Warning: 8 total messages of type: Ignoring restriction relation '%' with unknown to-way.
+Warning: 267 total messages of type: Ignoring restriction relation '%'.
+Warning: 48 total messages of type: Minor green from edge '%' to edge '%' exceeds %m/s. Maybe a left-turn lane is missing.
+Warning: 16 total messages of type: No way found for reference '%' in relation '%'
+Warning: 7 total messages of type: Not joining junctions % (%).
+Warning: 7 total messages of type: Shape for junction '%' has distance % to its given position.
+Warning: 18 total messages of type: Speed of % connection '%' reduced by % due to turning radius of % (length=%, angle=%).
+Warning: 174 total messages of type: from-edge '%' of restriction relation could not be determined
+Warning: 93 total messages of type: to-edge '%' of restriction relation could not be determined
+        1.56 real         0.28 user         0.04 sys
+            67960832  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                7891  page reclaims
+                  71  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   5  voluntary context switches
+                  74  involuntary context switches
+           259381405  instructions retired
+           117320048  cycles elapsed
+            13287880  peak memory footprint

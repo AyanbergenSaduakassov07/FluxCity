@@ -1,0 +1,15 @@
+discovery/upstream/
+.venv/
+__pycache__/
+*.pyc
+data/cache/
+discovery/poc/
+data/artifacts/
+data/db/
+node_modules/
+web/dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+.env

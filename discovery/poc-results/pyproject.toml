@@ -1,0 +1,9 @@
+[project]
+name = "poc"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "eclipse-sumo==1.28.0",
+    "libsumo==1.28.0",
+    "sumo-rl>=1.4.5",
+]
