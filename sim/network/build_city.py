@@ -50,6 +50,7 @@ PROFILES = {
     "v1": REPO_ROOT / "sim" / "network" / "config" / "city.yaml",
     "m2": REPO_ROOT / "sim" / "population" / "config" / "network-m2.yaml",
     "v2": REPO_ROOT / "sim" / "network" / "config" / "city-v2.yaml",
+    "astana": REPO_ROOT / "sim" / "network" / "config" / "astana.yaml",
 }
 DEFAULT_PROFILE = "v2"
 DEFAULT_CONFIG = PROFILES[DEFAULT_PROFILE]

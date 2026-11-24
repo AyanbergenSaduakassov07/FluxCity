@@ -15,8 +15,6 @@ from shapely.ops import voronoi_diagram
 
 from sim.common import run_cmd
 
-UTM_KSA_WEST = "EPSG:32637"  # UTM zone 37N covers Jeddah; used for areas only
-
 
 def read_poly(path: Path) -> Polygon:
     """Read a single-ring osmium/Osmosis .poly file."""
@@ -98,7 +96,7 @@ def write_districts(pbf: Path, poly: Path, out: Path, cfg: dict[str, Any]) -> in
         geometry=gdf.geometry,
         crs="EPSG:4326",
     )
-    out_gdf["area_km2"] = (out_gdf.to_crs(UTM_KSA_WEST).area / 1e6).round(3)
+    out_gdf["area_km2"] = (out_gdf.to_crs(out_gdf.estimate_utm_crs()).area / 1e6).round(3)
     out_gdf = out_gdf.sort_values("osm_id").reset_index(drop=True)
     out.unlink(missing_ok=True)
     out_gdf.to_file(out, driver="GeoJSON")

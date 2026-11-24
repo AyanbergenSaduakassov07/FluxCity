@@ -1,0 +1,46 @@
+# Astana city network build (python -m sim.network.build_city --network-profile astana).
+# Paths are relative to the repo root. Uses the v1 settings: SUMO type-map defaults, no measured
+# lane overlay yet (Astana has 0 turn:lanes tags in OSM; lanes are inferred).
+name: astana
+extract:
+  url: https://download.geofabrik.de/asia/kazakhstan/kazakhstan-latest.osm.pbf
+  file: data/osm/kazakhstan-latest.osm.pbf
+polygon: data/osm/astana.poly
+clip_pbf: data/osm/astana.osm.pbf
+osm_xml: data/osm/astana.osm.gz
+# No reviewed OSM fixes for Astana yet; an empty directory applies none.
+fixes_dir: data/osm/fixes/astana
+out_dir: data/astana
+net: data/astana/astana.net.xml
+type_files:
+  - "${SUMO_HOME}/data/typemap/osmNetconvert.typ.xml"
+  - sim/network/types/city.typ.xml
+netconvert_options:
+  - --geometry.remove
+  - --ramps.guess
+  - --junctions.join
+  - [--junctions.join-dist, "20"]
+  - --tls.guess-signals
+  - --tls.discard-simple
+  - --tls.join
+  - --roundabouts.guess
+  - [--keep-edges.by-vclass, "passenger,bus,emergency,truck"]
+  - --remove-edges.isolated
+  - [--keep-edges.components, "1"]
+  - --osm.lane-access
+  - --no-turnarounds.except-deadend
+  - --output.street-names
+  - --output.original-names
+  - [--seed, "1"]
+districts:
+  out: data/astana/districts.geojson
+  # Astana has only 5 city districts (audany), under the 10-polygon minimum in geo.write_districts,
+  # so the build falls back to a Voronoi of place nodes (finer zones). Level unverified.
+  admin_levels: ["6"]
+  fallback_place_values: [neighbourhood, suburb, quarter]
+buildings:
+  out: data/astana/buildings.geojson
+  heights: sim/network/config/buildings.yaml
+viewer:
+  edges_out: web/public/data/edges.geojson
+  districts_out: web/public/data/districts.geojson

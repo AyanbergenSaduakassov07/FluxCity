@@ -37,12 +37,20 @@ def logs_dir() -> Path:
     return _path("TT_LOGS_DIR", REPO_ROOT / "logs")
 
 
+def city() -> str:
+    """FLUX_CITY, default jeddah (the city with committed demo runs); selects data/<city>/."""
+    name = os.environ.get("FLUX_CITY", "jeddah")
+    if not name.isidentifier():
+        raise ValueError(f"FLUX_CITY must be a plain name, got {name!r}")
+    return name
+
+
 def districts_path() -> Path:
-    return _path("TT_DISTRICTS", REPO_ROOT / "data" / "jeddah" / "districts.geojson")
+    return _path("TT_DISTRICTS", REPO_ROOT / "data" / city() / "districts.geojson")
 
 
 def buildings_path() -> Path:
-    return _path("TT_BUILDINGS", REPO_ROOT / "data" / "jeddah" / "buildings.geojson")
+    return _path("TT_BUILDINGS", REPO_ROOT / "data" / city() / "buildings.geojson")
 
 
 def cors_origins() -> list[str]:

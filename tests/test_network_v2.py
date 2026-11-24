@@ -118,7 +118,7 @@ def test_evidence_file_matches_registered_defaults() -> None:
 
 def test_profiles() -> None:
     assert DEFAULT_PROFILE == "v2"
-    assert set(PROFILES) == {"v1", "m2", "v2"}
+    assert set(PROFILES) == {"v1", "m2", "v2", "astana"}
     assert all(p.exists() for p in PROFILES.values())
     v1 = load_yaml(PROFILES["v1"])
     v2 = load_yaml(PROFILES["v2"])
