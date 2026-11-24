@@ -4,6 +4,7 @@
 |---|---|---|---|
 | 2026-11-24 | 0 | **Approved** | ADR-001…014 accepted. Harvest-into-new-repo; libsumo workers + supervisor + validity gates; copilot on free Gemini/OpenRouter; Apache-2.0. |
 | 2026-11-24 | 1 | In progress | P1.1 scaffold done: uv + SUMO 1.28 pins, web (Vite/React/deck.gl/MapLibre), CI, Apache-2.0. Next P1.2 ‖ P1.5 |
+| 2026-11-24 | 1 | In progress | P1.2 merged (5db0a9a): core models, experiment hash from artifact sha256s, SQLite repos, artifact store; Opus review fixes applied. P1.5 blocked (Codex sandbox could not write its worktree). Next P1.3 |
 
 ## Open decisions
 None blocking Phase 1.
